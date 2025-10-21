@@ -1,4 +1,5 @@
 # Context Toolkit
+[English](https://github.com/snougo/Context-Toolkit/blob/main/README.md)/[中文](https://github.com/snougo/Context-Toolkit/blob/main/README_zh-CN.md)
 
 ## About Context Toolkit
 Context Toolkit is a convenient one-click Godot plugin that helps you get structured context information about your Godot project, saving you the trouble of manually building it during chats with LLMs.
