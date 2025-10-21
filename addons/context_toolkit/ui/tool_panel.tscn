@@ -1,0 +1,157 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt736v8tvt3fd"]
+
+[ext_resource type="Script" uid="uid://w4qgxnh5lftt" path="res://addons/context_toolkit/ui/tool_panel.gd" id="1_s1ben"]
+
+[node name="MainPanel" type="Control"]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s1ben")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FunctionBar" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/FunctionBar"]
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/FunctionBar/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="GetFolderStructureButton" type="Button" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Get Folder Structure"
+text_overrun_behavior = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SceneSelector" type="OptionButton" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "ui/tool_panel.tscn"
+popup/item_0/id = 0
+
+[node name="GetSceneTreeButton" type="Button" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Get Scene Tree"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScriptSelector" type="OptionButton" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 25
+text_overrun_behavior = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 6
+popup/item_0/text = "plugin.gd"
+popup/item_0/id = 0
+popup/item_1/text = "scripts/folder_manager.gd"
+popup/item_1/id = 1
+popup/item_2/text = "scripts/utils/context_parser_tool.gd"
+popup/item_2/id = 2
+popup/item_3/text = "scripts/utils/file_system_tool.gd"
+popup/item_3/id = 3
+popup/item_4/text = "scripts/utils/prompt_builder_tool.gd"
+popup/item_4/id = 4
+popup/item_5/text = "ui/tool_panel.gd"
+popup/item_5/id = 5
+
+[node name="GetScriptCodeButton" type="Button" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Get Script Code"
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(1, 1, 1, 0)
+
+[node name="CurrentWorkSpaceLabel" type="Label" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Current workspace: res://addons/context_toolkit"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
+
+[node name="ContextFolderSelectorButton" type="Button" parent="MarginContainer/HBoxContainer/FunctionBar/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select Workspace"
+text_overrun_behavior = 1
+
+[node name="ChatBar" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/ChatBar"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ChatBar/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="UserInput" type="TextEdit" parent="MarginContainer/HBoxContainer/ChatBar/Panel/MarginContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+theme_override_font_sizes/font_size = 25
+wrap_mode = 1
+autowrap_mode = 1
+scroll_smooth = true
+caret_blink = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+size = Vector2i(800, 400)
+min_size = Vector2i(800, 400)
+file_mode = 2
+display_mode = 1
