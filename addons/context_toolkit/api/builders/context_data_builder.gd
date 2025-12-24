@@ -9,7 +9,7 @@ class_name ContextDataBuilder
 const DEFAULT_SCAN_EXTENSIONS: Array = [
 	".tres", ".mp3", ".png", ".jpg", ".ogg", 
 	".tscn", ".gd", ".cfg", ".json", ".wav", 
-	".svg", ".md"
+	".svg", ".md", ".txt"
 ]
 
 
