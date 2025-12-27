@@ -144,6 +144,24 @@ static func format_image_metadata(_image_data: Dictionary) -> String:
 	return context_md
 
 
+# [新增] 格式化文件搜索结果为Markdown字符串。
+static func format_search_results(_keyword: String, _path: String, _results: Array) -> String:
+	var count = _results.size()
+	var context_md: String = "Search Results for keyword `\"%s\"` in `%s`\n" % [_keyword, _path]
+	
+	if count == 0:
+		context_md += "> No matching files found.\n"
+	else:
+		context_md += "Found %d matching file(s):\n\n" % count
+		for file_path in _results:
+			# 使用列表项展示，并加粗文件名部分以便快速阅读
+			var file_name = file_path.get_file()
+			var directory = file_path.get_base_dir()
+			context_md += "- **%s** (`%s`)\n" % [file_name, directory]
+			
+	return context_md
+
+
 #==============================================================================
 # ## 内部函数 ##
 #==============================================================================
