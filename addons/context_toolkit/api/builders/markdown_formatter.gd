@@ -111,19 +111,25 @@ static func format_text_content(_text_data: Dictionary) -> String:
 	var file_name: String = _text_data.path.get_file()
 	var extension: String = _text_data.path.get_extension().to_lower()
 	
-	# 根据文件类型选择合适的语言标识符，增强可读性
+	var context_md: String = "Content for File: `%s`\n" % file_name
+	
+	# 如果是纯文本或Markdown，直接输出内容，不使用代码块
+	if extension in ["txt", "md"]:
+		context_md += "\n"
+		context_md += _text_data.content
+		context_md += "\n"
+		return context_md
+	
+	# 其他格式使用代码块包裹
 	var lang_tag = ""
 	match extension:
 		"json":
 			lang_tag = "json"
-		"md", "markdown":
-			lang_tag = "markdown"
-		"cfg", "ini":
-			lang_tag = "ini"
-		"txt":
-			lang_tag = "text"
+		"cfg":
+			lang_tag = "cfg"
+		"tres":
+			lang_tag = "tres"
 	
-	var context_md: String = "Content for File: `%s`\n" % file_name
 	context_md += "```%s\n" % lang_tag
 	context_md += _text_data.content
 	context_md += "\n```\n"
