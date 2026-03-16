@@ -19,14 +19,14 @@ static func format_folder_structure(_folder_data: Dictionary) -> String:
 	context_md += "Folder File Structure:\n```\n" # 开始代码块，用于展示文件结构
 	context_md += "%s/\n" % _folder_data.name # 添加根文件夹名称
 	# 递归格式化子节点，并添加缩进
-	context_md += _format_folder_tree_recursive(_folder_data.children, "  ")
+	context_md += format_folder_tree_recursive(_folder_data.children, "  ")
 	context_md += "```\n" # 结束代码块
 	return context_md
 
 
 # 递归函数，用于将文件夹树数据格式化为Markdown字符串。
 # 根据层级添加缩进和连接符（├─, └─, │）。
-static func _format_folder_tree_recursive(_children: Array, _indent: String) -> String:
+static func format_folder_tree_recursive(_children: Array, _indent: String) -> String:
 	# 存储生成的Markdown字符串
 	var tree_md: String = ""
 	# 遍历所有子节点
@@ -46,7 +46,7 @@ static func _format_folder_tree_recursive(_children: Array, _indent: String) -> 
 			# 计算新的缩进，如果是最后一个节点，后续子节点的竖线应该断开
 			var new_indent: String = _indent + ("   " if is_last else "│  ")
 			# 递归调用处理子目录
-			tree_md += _format_folder_tree_recursive(item.children, new_indent)
+			tree_md += format_folder_tree_recursive(item.children, new_indent)
 		# 如果是文件
 		else:
 			# 文件名称后直接换行
@@ -62,14 +62,14 @@ static func format_scene_tree(_scene_path: String, _tree_data: Dictionary) -> St
 	var context_md: String = "Context for Scene: `%s`\n```\n" % _scene_path.get_file()
 	context_md += "Scene Tree Structure:\n"
 	# 递归格式化场景节点，初始缩进为空，且是根节点
-	context_md += _format_scene_node_recursive(_tree_data, "", true)
+	context_md += format_scene_node_recursive(_tree_data, "", true)
 	context_md += "```\n" # 结束代码块
 	return context_md
 
 
 # 递归函数，用于将场景节点数据格式化为Markdown字符串。
 # 根据层级和节点信息添加缩进、连接符、节点名称、类名和脚本路径。
-static func _format_scene_node_recursive(_node_data: Dictionary, _indent: String, _is_last: bool) -> String:
+static func format_scene_node_recursive(_node_data: Dictionary, _indent: String, _is_last: bool) -> String:
 	var line: String = _indent
 	# 如果不是根节点，添加连接符
 	if not _indent.is_empty():
@@ -86,20 +86,42 @@ static func _format_scene_node_recursive(_node_data: Dictionary, _indent: String
 	var children = _node_data.children
 	
 	for i in range(children.size()):
-		tree_md += _format_scene_node_recursive(children[i], new_indent, i == children.size() - 1)
+		tree_md += format_scene_node_recursive(children[i], new_indent, i == children.size() - 1)
 	
 	return tree_md
 
 
-# 格式化脚本内容数据为Markdown字符串。
+# 格式化脚本内容数据为Markdown字符串（带行号）。
 static func format_script_content(_script_data: Dictionary) -> String:
 	if _script_data.is_empty(): return ""
 	
 	var context_md: String = "Content for Script: `%s`\n" % _script_data.path.get_file()
 	context_md += "```gdscript\n"
-	context_md += _script_data.source_code
+	context_md += add_line_numbers(_script_data.source_code)
 	context_md += "\n```\n"
 	return context_md
+
+
+# 为代码添加行号。
+# 行号右对齐，宽度根据总行数动态计算，格式为 "  1 | 代码内容"
+static func add_line_numbers(_source_code: String) -> String:
+	var lines: PackedStringArray = _source_code.split("\n")
+	var total_lines: int = lines.size()
+	
+	# 计算行号宽度（最少3位，根据总行数动态调整）
+	var line_number_width: int = max(3, str(total_lines).length())
+	
+	var result: String = ""
+	for i in range(total_lines):
+		var line_number: String = str(i + 1)
+		# 右对齐行号，前面补空格
+		var padded_number: String = line_number.pad_zeros(line_number_width)
+		result += "%s | %s" % [padded_number, lines[i]]
+		# 最后一行不添加换行符（避免代码块末尾空行）
+		if i < total_lines - 1:
+			result += "\n"
+	
+	return result
 
 
 # 格式化通用文本文件内容为Markdown字符串。
