@@ -161,7 +161,6 @@ func get_image_metadata_as_markdown(_image_path: String) -> Dictionary:
 	return success_result
 
 
-# [新增] --- Search Files ---
 # 根据关键词搜索文件，并返回格式化的Markdown列表。
 # 默认搜索 .md 文件，但可以通过参数指定。
 func search_files_as_markdown(_root_path: String, _keyword: String, _extension: String = ".md") -> Dictionary:
@@ -171,7 +170,6 @@ func search_files_as_markdown(_root_path: String, _keyword: String, _extension: 
 	
 	# 调用 Scanner 进行搜索
 	var results: Array = FileSystemScanner.scan_for_files_with_keyword(_root_path, _keyword, _extension)
-	
 	# 调用 Formatter 格式化结果
 	var markdown: String = MarkdownFormatter.format_search_results(_keyword, _root_path, results)
 	

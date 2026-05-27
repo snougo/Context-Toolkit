@@ -7,9 +7,9 @@ class_name ContextDataBuilder
 # 默认扫描的文件扩展名列表。
 # 只有这些扩展名的文件才会被包含在文件夹结构数据中。
 const DEFAULT_SCAN_EXTENSIONS: Array = [
-	".tres", ".mp3", ".png", ".jpg", ".ogg", 
+	".tres", ".mp3", ".png", ".jpg", ".jpeg", ".ogg", 
 	".tscn", ".gd", ".cfg", ".json", ".wav", 
-	".svg", ".md", ".txt"
+	".svg", ".md", ".txt", ".gdshader", ".glsl", ".res"
 ]
 
 
@@ -111,22 +111,39 @@ static func _build_scene_node_data(_node: Node) -> Dictionary:
 	return node_data
 
 
-# 构建指定脚本文件的内容数据。
-# 加载脚本文件并获取其源代码。
+# 构建指定脚本文件的内容数据
+# 加载脚本文件并获取其源代码
 static func build_script_content_data(_script_path: String) -> Dictionary:
-	if not FileAccess.file_exists(_script_path): return {}
-	
-	var script_resource: Resource = load(_script_path)
-	
-	if not script_resource is Script:
+	if not FileAccess.file_exists(_script_path):
 		return {}
 	
-	if not is_instance_valid(script_resource) or not script_resource.has_source_code():
-		return {}
+	var resource: Resource = load(_script_path)
+	var source_code: String = ""
+	
+	if resource is Script:
+		if not resource.has_source_code():
+			return {}
+		source_code = resource.source_code
+	elif resource is Shader:
+		source_code = resource.get_code()
+		if source_code.is_empty():
+			return {}
+	else:
+		# Fallback: 纯文本着色器文件（如 .glsl），直接用 FileAccess 读取
+		if is_instance_valid(resource):
+			pass  # resource 存在但类型不匹配，跳过
+		var file: FileAccess = FileAccess.open(_script_path, FileAccess.READ)
+		
+		if not is_instance_valid(file):
+			return {}
+		source_code = file.get_as_text()
+		file.close()
+		if source_code.is_empty():
+			return {}
 	
 	return {
 		"path": _script_path,
-		"source_code": script_resource.source_code
+		"source_code": source_code
 	}
 
 

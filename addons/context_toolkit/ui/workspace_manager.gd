@@ -1,4 +1,3 @@
-# res://addons/context_toolkit/scripts/core/workspace_manager.gd
 extends Node
 class_name WorkspaceManager
 

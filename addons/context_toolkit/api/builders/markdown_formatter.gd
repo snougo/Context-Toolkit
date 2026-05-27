@@ -93,10 +93,22 @@ static func format_scene_node_recursive(_node_data: Dictionary, _indent: String,
 
 # 格式化脚本内容数据为Markdown字符串（带行号）。
 static func format_script_content(_script_data: Dictionary) -> String:
-	if _script_data.is_empty(): return ""
+	if _script_data.is_empty():
+		return ""
 	
-	var context_md: String = "Content for Script: `%s`\n" % _script_data.path.get_file()
-	context_md += "```gdscript\n"
+	var file_name: String = _script_data.path.get_file()
+	var extension: String = _script_data.path.get_extension().to_lower()
+	
+	# 根据扩展名选择语言标识
+	var lang_tag: String = "gdscript"
+	match extension:
+		"gdshader", "gdshaderinc":
+			lang_tag = "gdshader"
+		"glsl":
+			lang_tag = "glsl"
+	
+	var context_md: String = "Content for Script: `%s`\n" % file_name
+	context_md += "```%s\n" % lang_tag
 	context_md += add_line_numbers(_script_data.source_code)
 	context_md += "\n```\n"
 	return context_md
@@ -145,12 +157,12 @@ static func format_text_content(_text_data: Dictionary) -> String:
 	# 其他格式使用代码块包裹
 	var lang_tag = ""
 	match extension:
-		"json":
-			lang_tag = "json"
-		"cfg":
-			lang_tag = "cfg"
-		"tres":
-			lang_tag = "tres"
+		"json":    lang_tag = "json"
+		"cfg":     lang_tag = "cfg"
+		"tres":    lang_tag = "tres"
+		"res":    lang_tag = "res"
+		"gdshader": lang_tag = "gdshader"
+		"glsl":    lang_tag = "glsl"
 	
 	context_md += "```%s\n" % lang_tag
 	context_md += _text_data.content
