@@ -7,9 +7,12 @@ class_name ContextDataBuilder
 # 默认扫描的文件扩展名列表。
 # 只有这些扩展名的文件才会被包含在文件夹结构数据中。
 const DEFAULT_SCAN_EXTENSIONS: Array = [
-	".tres", ".mp3", ".png", ".jpg", ".jpeg", ".ogg", 
-	".tscn", ".gd", ".cfg", ".json", ".wav", 
-	".svg", ".md", ".txt", ".gdshader", ".glsl", ".res"
+	".tres", ".res", 
+	".mp3", ".wav", ".ogg", 
+	".png", ".jpg", ".jpeg", ".svg", 
+	".tscn", ".scn", 
+	".gd", ".gdshader", 
+	".glsl", ".cfg", ".json", ".md", ".txt",
 ]
 
 
